@@ -1,4 +1,5 @@
 import os
+import time
 import shutil
 from subprocess import PIPE, run
 import sys
@@ -64,7 +65,7 @@ VALID_SPREADSHEET_FORMATS = [
     ".xltm",
     ".xlam",
 ]
-VALID_COMPRESSED_FORMATS = [".zip", ".rar", ".7z", ".zipx"]
+VALID_COMPRESSED_FORMATS = [".zip", ".rar", ".7z", ".xip", ".zipx"]
 
 dirPath = os.getcwd()
 foldersDirPath = os.path.join(dirPath, "Folders")
@@ -79,6 +80,9 @@ videosDirPath = os.path.join(dirPath, "Videos")
 
 
 def create_default_dirs(dirs):
+    if dirs == DEFAULT_DIR:
+        return
+
     if "Videos" not in dirs:
         os.makedirs(videosDirPath)
         print("created videos folder in Downloads")
@@ -91,20 +95,20 @@ def create_default_dirs(dirs):
         os.makedirs(docsDirPath)
         print("created Docs directory in Downloads")
 
-    docsDirContents = os.listdir(docsDirPath)
-    if "Text" not in docsDirContents:
+    docs_dir_contents = os.listdir(docsDirPath)
+    if "Text" not in docs_dir_contents:
         os.makedirs(textDirPath)
         print("created Text directory in Downloads/Docs")
-    if "PDF" not in docsDirContents:
+    if "PDF" not in docs_dir_contents:
         os.makedirs(pdfDirPath)
         print("created PDF directory in Downloads/Docs")
-    if "SpreadSheet" not in docsDirContents:
+    if "SpreadSheet" not in docs_dir_contents:
         os.makedirs(sheetDirPath)
         print("created SpreadSheet directory in Downloads/Docs")
-    if "Others" not in docsDirContents:
+    if "Others" not in docs_dir_contents:
         os.makedirs(othersDirPath)
         print("created Others directory in Downloads/Docs")
-    if "Zip" not in docsDirContents:
+    if "Zip" not in docs_dir_contents:
         os.makedirs(zipDirPath)
         print("created Zip directory in Downloads/Docs")
 
@@ -119,27 +123,42 @@ def copy_and_delete(src, dest):
         os.remove(src)
 
 
+def file_filter(file: str):
+    file_name, _ = os.path.splitext(file)
+    if file_name.startswith("."):
+        return False
+    else:
+        return True
+
+
 if __name__ == "__main__":
     for root, dirs, files in os.walk(dirPath):
         create_default_dirs(dirs)
-        for file in files:
-            fileName, fileExtension = os.path.splitext(file)
-            if not fileName.startswith("."):
-                if fileExtension in VALID_COMPRESSED_FORMATS:
-                    copy_and_delete(file, zipDirPath)
-                elif fileExtension in VALID_PDF_FORMATS:
-                    copy_and_delete(file, pdfDirPath)
-                elif fileExtension in VALID_IMAGE_FORMATS:
-                    copy_and_delete(file, imagesDirPath)
-                elif fileExtension in VALID_SPREADSHEET_FORMATS:
-                    copy_and_delete(file, sheetDirPath)
-                elif fileExtension in VALID_TEXT_FORMATS:
-                    copy_and_delete(file, textDirPath)
-                elif fileExtension in VALID_VIDEO_FORMATS:
-                    copy_and_delete(file, videosDirPath)
-                else:
-                    copy_and_delete(file, othersDirPath)
-        for directory in dirs:
-            if directory not in DEFAULT_DIR:
-                shutil.move(directory, foldersDirPath)
         break
+
+    while True:
+        for root, dirs, files in os.walk(dirPath):
+            files_to_organize = list(filter(file_filter, files))
+            if len(files_to_organize) != 0:
+                for file in files_to_organize:
+                    fileName, fileExtension = os.path.splitext(file)
+                    if fileExtension in VALID_COMPRESSED_FORMATS:
+                        copy_and_delete(file, zipDirPath)
+                    elif fileExtension in VALID_PDF_FORMATS:
+                        copy_and_delete(file, pdfDirPath)
+                    elif fileExtension in VALID_IMAGE_FORMATS:
+                        copy_and_delete(file, imagesDirPath)
+                    elif fileExtension in VALID_SPREADSHEET_FORMATS:
+                        copy_and_delete(file, sheetDirPath)
+                    elif fileExtension in VALID_TEXT_FORMATS:
+                        copy_and_delete(file, textDirPath)
+                    elif fileExtension in VALID_VIDEO_FORMATS:
+                        copy_and_delete(file, videosDirPath)
+                    else:
+                        copy_and_delete(file, othersDirPath)
+            if dirs != DEFAULT_DIR:
+                for directory in dirs:
+                    if directory not in DEFAULT_DIR:
+                        shutil.move(directory, foldersDirPath)
+            break
+        time.sleep(1)
