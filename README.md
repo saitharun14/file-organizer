@@ -1,36 +1,61 @@
-This is a automated file organizer specially made to automate the Downloads folders no macbooks.
+## Automated File Organizer for MacBooks
 
-## Getting started
+This is a Python script to automate the organization of your Downloads folder on a MacBook.
 
-#### Perquisites
-- Python 3.
+### Prerequisites
 
-## Quick Start
+* Python 3
 
-- Clone or download the repo
-> *NOTE:* make sure the `script.py` and `shell_script.py` are in the same folder
-- Open the terminal in the folder were the shell_script is saved run
-  ```bash
-  $ chmod +u+x shell_script.sh
-  ```
-- Open a terminal in the folder you want the file organisation to happen.<br>
-  > *NOTE:* If you want to automate the process of file organization it's suggested to run the script in the folder that's designated to be the file of downloads.
-- Run the `shell_script.sh` as show below to run the script only once<br>
-  ```bash 
-  $ PATH/shell_script.sh
-  ```
-  > *NOTE:* `PATH` is the pathname where the `shell_script.sh` is saved
-- If you want a background job to run which organizer the file as they are saved to the file run the below command.<br>
-  ```bash
-  $ PATH/shell_script.sh auto
-  ```
-  > *NOTE:* `auto` is argument to run the script as a background job by default it runs only once organizing the directory.
+### Quick Start
 
-## How To Kill the background job
+1. Clone or download the repository.
+2. Open a terminal and navigate to the directory containing the script files.
+3. Make the script file `shell_script.sh` executable by running the following command:
 
-- when you run the script either as a one time script or a background job it generates a `log.txt` log in the directory where the script is present.
-- The log will contains the PID (Process Identifier) of the background job.
-- Run<br>
-  ```bash
-  $ kill -15 {PID}
-  ```
+```bash
+chmod +u+x shell_script.sh
+```
+4. To run the script once, execute the following command:
+
+```bash
+PATH/shell_script.sh
+```
+>NOTE: `PATH` is the pathname where the script files are saved.
+5. To run the script as a background job, execute the following command:
+
+```bash
+PATH/shell_script.sh auto
+```
+>NOTE: The `auto` argument is to run the process as a background job.
+
+### File Structure
+
+* After the script is run, the file structure in the base directory will look as below:
+```
+├── [BASE_DIRECTORY]
+│   ├── Docs
+│   │   ├── Others
+│   │   ├── PDF
+│   │   ├── SpreedSheet
+│   │   ├── Text
+│   │   ├── Zip
+│   ├── Folders
+│   ├── Images
+│   ├── Vidoes
+│   ├── log.txt
+```
+* `log.txt` will contain all the logs and information about **PID** (Process Identifier) of the process.
+* `Folders` is a collection of various directors that were present in the `BASE_DIRECTORY`.
+
+### Terminate the Background Job
+
+* In a terminal run
+
+```bash
+kill -15 [PID]
+```
+* The **PID** of the process can be found in the `log.txt` file.
+
+### Support
+
+If you need help using the file-organizer, or have found a bug, please create an issue on the [Github repo](https://github.com/saitharun14/file-organizer/issues). If you find it useful, consider giving it a ⭐️star. **Thank you**
