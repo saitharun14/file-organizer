@@ -2,9 +2,17 @@
 
 This is a Python script to automate the organization of your Downloads folder on a MacBook.
 
+## Version
+
+1.1
+
+## What's new
+
+Added the functionality to handle duplicate file.
+
 ### Prerequisites
 
-* Python 3
+- Python 3
 
 ### Quick Start
 
@@ -15,22 +23,27 @@ This is a Python script to automate the organization of your Downloads folder on
 ```bash
 chmod +u+x shell_script.sh
 ```
+
 4. To run the script once, execute the following command:
 
 ```bash
 PATH/shell_script.sh
 ```
->NOTE: `PATH` is the pathname where the script files are saved.
+
+> NOTE: `PATH` is the pathname where the script files are saved.
+
 5. To run the script as a background job, execute the following command:
 
 ```bash
 PATH/shell_script.sh auto
 ```
->NOTE: The `auto` argument is to run the process as a background job.
+
+> NOTE: The `auto` argument is to run the process as a background job.
 
 ### File Structure
 
-* After the script is run, the file structure in the base directory will look as below:
+- After the script is run, the file structure in the base directory will look as below:
+
 ```
 ├── [BASE_DIRECTORY]
 │   ├── Docs
@@ -41,20 +54,22 @@ PATH/shell_script.sh auto
 │   │   ├── Zip
 │   ├── Folders
 │   ├── Images
-│   ├── Vidoes
+│   ├── Videos
 │   ├── log.txt
 ```
-* `log.txt` will contain all the logs and information about **PID** (Process Identifier) of the process.
-* `Folders` is a collection of various directors that were present in the `BASE_DIRECTORY`.
+
+- `log.txt` will contain all the logs and information about **PID** (Process Identifier) of the process.
+- `Folders` is a collection of various directors that were present in the `BASE_DIRECTORY`.
 
 ### Terminate the Background Job
 
-* In a terminal run
+- In a terminal run
 
 ```bash
 kill -15 [PID]
 ```
-* The **PID** of the process can be found in the `log.txt` file.
+
+- The **PID** of the process can be found in the `log.txt` file.
 
 ### Support
 
