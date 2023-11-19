@@ -30,7 +30,9 @@ chmod +u+x shell_script.sh
 PATH/shell_script.sh
 ```
 
-> NOTE: `PATH` is the pathname where the script files are saved. 5. To run the script as a background job, execute the following command:
+> NOTE: `PATH` is the pathname where the script files are saved.
+
+5. To run the script as a background job, execute the following command:
 
 ```bash
 PATH/shell_script.sh auto
