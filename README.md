@@ -2,11 +2,11 @@
 
 This is a Python script to automate the organization of your Downloads folder on a MacBook.
 
-## Version
+### Version
 
 1.1
 
-## What's new
+### What's new
 
 Added the functionality to handle duplicate file.
 
