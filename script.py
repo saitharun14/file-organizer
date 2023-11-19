@@ -1,7 +1,9 @@
+import signal
 import logging
 import os
 import time
 import shutil
+from datetime import datetime
 from subprocess import PIPE, run
 import sys
 
@@ -68,6 +70,22 @@ VALID_SPREADSHEET_FORMATS = [
 ]
 VALID_COMPRESSED_FORMATS = [".zip", ".rar", ".7z", ".xip", ".zipx"]
 
+logging.basicConfig(
+    filename="log.txt",
+    filemode="w",
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%d/%m/%y %H:%M:%S",
+)
+
+
+def termination_handler(signum, frame):
+    logging.debug("Process is terminated")
+    sys.exit()
+
+
+signal.signal(signal.SIGTERM, termination_handler)
+
 dirPath = os.getcwd()
 foldersDirPath = os.path.join(dirPath, "Folders")
 docsDirPath = os.path.join(dirPath, "Docs")
@@ -119,10 +137,13 @@ def create_default_dirs(dirs):
         logging.info("created Folders directory in Downloads")
 
 
-def copy_and_delete(src, dest):
-    shutil.copy2(src, dest)
-    if os.path.exists(src):
-        os.remove(src)
+def copy_and_delete(file_name, dest):
+    if os.path.exists(os.path.join(dest, file_name)):
+        split_file = os.path.splitext(file_name)
+        new_file_name = f"{split_file[0]}_{datetime.now().strftime('%d-%m-%y_%H%M%S')}{split_file[1]}"
+        os.rename(file_name, new_file_name)
+        file_name = new_file_name
+    shutil.move(file_name, dest)
 
 
 def main():
@@ -163,13 +184,6 @@ def file_filter(file: str):
 
 if __name__ == "__main__":
     for root, dirs, files in os.walk(dirPath):
-        logging.basicConfig(
-            filename="log.txt",
-            filemode="w",
-            level=logging.DEBUG,
-            format="%(asctime)s-%(levelname)s-%(message)s",
-            datefmt="%d/%m/%y %H:%M:%S",
-        )
         logging.debug("logger is successfully created")
         logging.info("PID of the process is: " + str(os.getpid()))
         create_default_dirs(dirs)
